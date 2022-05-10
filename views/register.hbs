@@ -1,19 +1,26 @@
 <div class="mb-4 text-center">
-  <h1 class="h3 font-weight-normal mb-3">Log In</h1>
+  <h1 class="h3 font-weight-normal mb-3">Register</h1>
 </div>
-<form class="form-signin" action="/signin" method="POST">
+<form class="form-signup" action="/register" method="POST" style="width: 100%;">
+  <div class="form-row mb-3">
+    <label class="form-label" for="name">Name</label>
+    <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
+  </div>
   <div class="form-row mb-3">
     <label class="form-label" for="email">Email</label>
-    <input class="form-control" id="email" type="text" name="email" class="form-control" placeholder="Email" required
-      autofocus>
+    <input type="text" id="email" name="email" class="form-control" placeholder="Email" required>
   </div>
   <div class="form-row mb-3">
     <label class="form-label" for="password">Password</label>
-    <input class="form-control" id="password" type="password" name="password" class="form-control"
-      placeholder="Password" required>
+    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
   </div>
-  <button class="btn btn-primary btn-block" type="submit">Submit</button>
+  <div class="form-row mb-3">
+    <label class="form-label" for="passwordCheck">Password Check</label>
+    <input type="password" id="passwordCheck" name="passwordCheck" class="form-control" placeholder="Password Check"
+      required>
+  </div>
+  <button class="btn btn-primary btn-block" type="submit">Register</button>
 </form>
 <div class="mb-4 text-center">
-  <p><a href="/signup">Register</a></p>
+  <p><a href="/login">Login</a></p>
 </div>
