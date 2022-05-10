@@ -8,12 +8,14 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', passport.authenticate('local', {
-  failureRedirect: '/users.login',
+  failureRedirect: '/users/login',
   failureFlash: true
 }), userController.Login)
 
 router.get('/register', userController.getRegisterPage)
 
-router.post('/register', )
+router.post('/register', userController.register)
+
+router.get('/logout', userController.logOut)
 
 module.exports = router

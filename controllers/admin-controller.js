@@ -1,6 +1,6 @@
 const adminController = {
   getAdminHonePage: (req, res) => {
-    res.send('Admin home page')
+    res.render('admin/dashboard')
   }
 }
 
