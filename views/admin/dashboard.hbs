@@ -1,74 +1,61 @@
-<div class="row">
-  <div class="col-2">
-    <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMenu"
-            aria-expanded="false" aria-controls="collapseWidthExample">
-            <i class="fa-solid fa-bars fs-2"></i>
-          </button>
-        </a>
-      </div>
-    </nav>
-    {{> collapseNav}}
+{{> collapseNav}}
+<div class="col-10">
+  <div class="row">
+    <h2 style="padding: 8px 0px;">Dashboard<span class="fs-6 mx-5">control panel</span></h2>
   </div>
-  <div class="col-10">
-    <div class="row">
-      <h2>Dashboard<span class="fs-6 mx-5">control panel</span></h2>
+  <div class="row mt-3">
+    <div class="card mx-2" style="width: 15rem; background-color: #5afaf7;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="align-self-center">
+            <h2 class="card-title">1</h2>
+            <p class="card-text">Total products.</p>
+          </div>
+          <i class="fa-solid fa-utensils fs-2 align-self-center"></i>
+        </div>
+        <a href="#" class="btn text-white text-decoration-none mt-4 text-center" style="background-color: #286b6a;">View
+          Products<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
+      </div>
     </div>
-    <div class="row mt-3">
-      <div class="card mx-2" style="width: 15rem; background-color: #5afaf7;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div class="align-self-center">
-              <h2 class="card-title">1</h2>
-                <p class="card-text">Total products.</p>
-            </div>
-            <i class="fa-solid fa-utensils fs-2 align-self-center"></i>
+    <div class="card mx-2" style="width: 15rem; background-color: #f4fc5d;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="align-self-center">
+            <h2 class="card-title">4</h2>
+            <p class="card-text">Total Orders.</p>
           </div>
-          <a href="#" class="btn text-white text-decoration-none mt-4 text-center"
-            style="background-color: #286b6a;">View Products<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
+          <i class="fa-solid fa-book-open fs-2 align-self-center"></i>
         </div>
+        <a href="#" class="btn text-white text-decoration-none mt-4 text-center" style="background-color: #838732;">View
+          Orders<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
       </div>
-      <div class="card mx-2" style="width: 15rem; background-color: #f4fc5d;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div class="align-self-center">
-              <h2 class="card-title">4</h2>
-                <p class="card-text">Total Orders.</p>
-            </div>
-            <i class="fa-solid fa-book-open fs-2 align-self-center"></i>
+    </div>
+    <div class="card mx-2" style="width: 15rem; background-color: #fc7147;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="align-self-center">
+            <h2 class="card-title">10</h2>
+            <p class="card-text">Total Users.</p>
           </div>
-          <a href="#" class="btn text-white text-decoration-none mt-4 text-center"
-            style="background-color: #838732;">View Orders<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
+          <i class="fa-solid fa-user-group fs-2 align-self-center"></i>
         </div>
+        <a href="/admin/users" class="btn text-white text-decoration-none mt-4 text-center" style="background-color: #ae4f32;">View
+          Users<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
       </div>
-      <div class="card mx-2" style="width: 15rem; background-color: #fc7147;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div class="align-self-center">
-              <h2 class="card-title">10</h2>
-                <p class="card-text">Total Users.</p>
-            </div>
-            <i class="fa-solid fa-user-group fs-2 align-self-center"></i>
+    </div>
+    <div class="card mx-2" style="width: 15rem; background-color: #fc47e7;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="align-self-center">
+            <h2 class="card-title">8</h2>
+            <p class="card-text">Total Stores.</p>
           </div>
-          <a href="#" class="btn text-white text-decoration-none mt-4 text-center"
-            style="background-color: #ae4f32;">View Users<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
+          <i class="fa-solid fa-store fs-2 align-self-center"></i>
         </div>
-      </div>
-      <div class="card mx-2" style="width: 15rem; background-color: #fc47e7;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div class="align-self-center">
-              <h2 class="card-title">8</h2>
-                <p class="card-text">Total Stores.</p>
-            </div>
-            <i class="fa-solid fa-store fs-2 align-self-center"></i>
-          </div>
-          <a href="#" class="btn text-white text-decoration-none mt-4 text-center"
-            style="background-color: #a73399;">View Stores<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
-        </div>
+        <a href="#" class="btn text-white text-decoration-none mt-4 text-center" style="background-color: #a73399;">View
+          Stores<i class="fa-solid fa-circle-arrow-right mx-2"></i></a>
       </div>
     </div>
   </div>
+</div>
 </div>
