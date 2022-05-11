@@ -1,6 +1,7 @@
 const db = require('../models')
 const User = db.User
 const Group = db.Group
+const Table = db.Table
 const adminController = {
   getAdminHomePage: (req, res) => {
     res.render('admin/dashboard')
@@ -153,6 +154,86 @@ const adminController = {
           res.redirect('/admin/groups')
         } else {
           return res.render('admin/groups', { groups: filteredGroup })
+        }
+      })
+      .catch(error => next(error))
+  },
+  getTablesPage: (req, res, next) => {
+    Table.findAll({ raw: true }).then(tables => {
+      if (!tables) throw new Error('Something wrong please try again!')
+      return res.render('admin/tables', { tables })
+    })
+      .catch(error => next(error))
+  },
+  getAddTablePage: (req, res) => {
+    res.render('admin/addTable')
+  },
+  addTable: (req, res, next) => {
+    const { name, capacity, available, status } = req.body
+    if (!name || !capacity || !available || !status) throw new Error('All feilds needed.')
+    return Table.findOne({ where: { name } })
+      .then(table => {
+        if (table) throw new Error('Table already exist!')
+        return Table.create({ name, capacity, available, status })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully added a table!')
+        res.redirect('/admin/tables')
+      })
+      .catch(error => next(error))
+  },
+  getEditTablePage: (req, res, next) => {
+    const id = req.params.id
+    return Table.findByPk(id, { raw: true })
+      .then(table => {
+        if (!table) throw new Error('Something wrong please try again!')
+        console.log(table)
+        return res.render('admin/editTable', { table })
+      })
+      .catch(err => next(err))
+  },
+  updateTable: (req, res, next) => {
+    const id = req.params.id
+    const { name, capacity, available, status } = req.body
+    Table.findByPk(id)
+      .then(table => {
+        if (!table) throw new Error('Something wrong please try again!')
+        return table.update({ name, capacity, available, status })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully updated a table.')
+        res.redirect('/admin/tables')
+      })
+      .catch(error => next(error))
+  },
+  deleteTable: (req, res, next) => {
+    const id = req.params.id
+    Table.findByPk(id)
+      .then(table => {
+        if (!table) throw new Error('Something wrong please try again!')
+        return table.destroy()
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully deleted a table.')
+        res.redirect('/admin/tables')
+      })
+      .catch(error => next(error))
+  },
+  searchTable: (req, res, next) => {
+    if (!req.query.keyword) return res.redirect('back')
+    const keyword = req.query.keyword.trim().toLowerCase()
+    return Table.findAll({ raw: true })
+      .then(tables => {
+        if (!tables) throw new Error('Something wrong please try again!')
+        const filteredTable = tables.filter(group => group.name.toLowerCase().includes(keyword))
+        return filteredTable
+      })
+      .then(filteredTable => {
+        if (!filteredTable.length) {
+          req.flash('warning_messages', `There is no results about ${keyword}`)
+          res.redirect('/admin/tables')
+        } else {
+          return res.render('admin/tables', { tables: filteredTable })
         }
       })
       .catch(error => next(error))

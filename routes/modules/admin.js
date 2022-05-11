@@ -19,4 +19,12 @@ router.patch('/groups/:id', adminController.updateGroup)
 router.delete('/groups/:id', adminController.deleteGroup)
 router.get('/groups/search', adminController.searchGroup)
 
+router.get('/tables', adminController.getTablesPage)
+router.get('/addTable', adminController.getAddTablePage)
+router.post('/tables', adminController.addTable)
+router.get('/tables/:id/edit', adminController.getEditTablePage)
+router.patch('/tables/:id', adminController.updateTable)
+router.delete('/tables/:id', adminController.deleteTable)
+router.get('/tables/search', adminController.searchTable)
+
 module.exports = router
