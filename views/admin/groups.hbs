@@ -28,7 +28,7 @@
         <tr>
           <th scope="row">{{this.id}}</th>
           <td>{{this.name}}</td>
-          <td>{{this.status}}</td>
+          <td>{{#ifCond this.status 1}}Active{{else}}Not active{{/ifCond}}</td>
           <td class="text-center">
             <button type="button" class="btn btn-link">
               <a class="btn btn-primary btn-block" href="/admin/groups/{{this.id}}/edit">

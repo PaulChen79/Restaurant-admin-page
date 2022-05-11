@@ -76,6 +76,23 @@ const adminController = {
       return res.render('admin/groups', { groups })
     })
       .catch(error => next(error))
+  },
+  getAddGroupPage: (req, res) => {
+    res.render('admin/addGroup')
+  },
+  addGroup: (req, res, next) => {
+    const { name, status } = req.body
+    if (!name || !status) throw new Error('All feilds needed.')
+    return Group.findOne({ where: { name } })
+      .then(group => {
+        if (group) throw new Error('Group already exist!')
+        return Group.create({ name, status })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully added a group!')
+        res.redirect('/admin/groups')
+      })
+      .catch(error => next(error))
   }
 }
 
