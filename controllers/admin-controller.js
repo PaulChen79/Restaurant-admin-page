@@ -1,7 +1,5 @@
 const db = require('../models')
-const User = db.User
-const Group = db.Group
-const Table = db.Table
+const { User, Group, Table, Category } = db
 const adminController = {
   getAdminHomePage: (req, res) => {
     res.render('admin/dashboard')
@@ -225,7 +223,7 @@ const adminController = {
     return Table.findAll({ raw: true })
       .then(tables => {
         if (!tables) throw new Error('Something wrong please try again!')
-        const filteredTable = tables.filter(group => group.name.toLowerCase().includes(keyword))
+        const filteredTable = tables.filter(table => table.name.toLowerCase().includes(keyword))
         return filteredTable
       })
       .then(filteredTable => {
@@ -234,6 +232,86 @@ const adminController = {
           res.redirect('/admin/tables')
         } else {
           return res.render('admin/tables', { tables: filteredTable })
+        }
+      })
+      .catch(error => next(error))
+  },
+  getCategoriesPage: (req, res, next) => {
+    Category.findAll({ raw: true }).then(categories => {
+      if (!categories) throw new Error('Something wrong please try again!')
+      return res.render('admin/categories', { categories })
+    })
+      .catch(error => next(error))
+  },
+  getAddCategoryPage: (req, res) => {
+    res.render('admin/addCategory')
+  },
+  addCategory: (req, res, next) => {
+    const { name, status } = req.body
+    if (!name || !status) throw new Error('All feilds needed.')
+    return Category.findOne({ where: { name } })
+      .then(category => {
+        if (category) throw new Error('Category already exist!')
+        return Category.create({ name, status })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully added a category!')
+        res.redirect('/admin/categories')
+      })
+      .catch(error => next(error))
+  },
+  getEditCategoryPage: (req, res, next) => {
+    const id = req.params.id
+    return Category.findByPk(id, { raw: true })
+      .then(category => {
+        if (!category) throw new Error('Something wrong please try again!')
+        console.log(category)
+        return res.render('admin/editCategory', { category })
+      })
+      .catch(err => next(err))
+  },
+  updateCategory: (req, res, next) => {
+    const id = req.params.id
+    const { name, status } = req.body
+    Category.findByPk(id)
+      .then(category => {
+        if (!category) throw new Error('Something wrong please try again!')
+        return category.update({ name, status })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully updated a category.')
+        res.redirect('/admin/categories')
+      })
+      .catch(error => next(error))
+  },
+  deleteCategory: (req, res, next) => {
+    const id = req.params.id
+    Category.findByPk(id)
+      .then(category => {
+        if (!category) throw new Error('Something wrong please try again!')
+        return category.destroy()
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully deleted a category.')
+        res.redirect('/admin/categories')
+      })
+      .catch(error => next(error))
+  },
+  searchCategory: (req, res, next) => {
+    if (!req.query.keyword) return res.redirect('back')
+    const keyword = req.query.keyword.trim().toLowerCase()
+    return Category.findAll({ raw: true })
+      .then(categories => {
+        if (!categories) throw new Error('Something wrong please try again!')
+        const filteredCategory = categories.filter(category => category.name.toLowerCase().includes(keyword))
+        return filteredCategory
+      })
+      .then(filteredCategory => {
+        if (!filteredCategory.length) {
+          req.flash('warning_messages', `There is no results about ${keyword}`)
+          res.redirect('/admin/categories')
+        } else {
+          return res.render('admin/categories', { categories: filteredCategory })
         }
       })
       .catch(error => next(error))

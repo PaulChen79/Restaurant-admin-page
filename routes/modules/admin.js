@@ -27,4 +27,12 @@ router.patch('/tables/:id', adminController.updateTable)
 router.delete('/tables/:id', adminController.deleteTable)
 router.get('/tables/search', adminController.searchTable)
 
+router.get('/categories', adminController.getCategoriesPage)
+router.get('/addCategory', adminController.getAddCategoryPage)
+router.post('/categories', adminController.addCategory)
+router.get('/categories/:id/edit', adminController.getEditCategoryPage)
+router.patch('/categories/:id', adminController.updateCategory)
+router.delete('/categories/:id', adminController.deleteCategory)
+router.get('/categories/search', adminController.searchCategory)
+
 module.exports = router
