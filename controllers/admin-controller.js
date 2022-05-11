@@ -100,6 +100,62 @@ const adminController = {
         res.redirect('/admin/groups')
       })
       .catch(error => next(error))
+  },
+  getEditGroupPage: (req, res, next) => {
+    const id = req.params.id
+    return Group.findByPk(id, { raw: true })
+      .then(group => {
+        if (!group) throw new Error('Something wrong please try again!')
+        console.log(group)
+        return res.render('admin/editGroup', { group })
+      })
+      .catch(err => next(err))
+  },
+  updateGroup: (req, res, next) => {
+    const id = req.params.id
+    const { name, status } = req.body
+    Group.findByPk(id)
+      .then(group => {
+        if (!group) throw new Error('Something wrong please try again!')
+        return group.update({ name, status })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully updated a group.')
+        res.redirect('/admin/groups')
+      })
+      .catch(error => next(error))
+  },
+  deleteGroup: (req, res, next) => {
+    const id = req.params.id
+    Group.findByPk(id)
+      .then(group => {
+        if (!group) throw new Error('Something wrong please try again!')
+        return group.destroy()
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully deleted a group.')
+        res.redirect('/admin/groups')
+      })
+      .catch(error => next(error))
+  },
+  searchGroup: (req, res, next) => {
+    if (!req.query.keyword) return res.redirect('back')
+    const keyword = req.query.keyword.trim().toLowerCase()
+    return Group.findAll({ raw: true })
+      .then(groups => {
+        if (!groups) throw new Error('Something wrong please try again!')
+        const filteredGroup = groups.filter(group => group.name.toLowerCase().includes(keyword))
+        return filteredGroup
+      })
+      .then(filteredGroup => {
+        if (!filteredGroup.length) {
+          req.flash('warning_messages', `There is no results about ${keyword}`)
+          res.redirect('/admin/groups')
+        } else {
+          return res.render('admin/groups', { groups: filteredGroup })
+        }
+      })
+      .catch(error => next(error))
   }
 }
 

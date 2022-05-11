@@ -14,5 +14,9 @@ router.get('/users/search', adminController.searchUser)
 router.get('/groups', adminController.getGroupsPage)
 router.get('/addGroup', adminController.getAddGroupPage)
 router.post('/groups', adminController.addGroup)
+router.get('/groups/:id/edit', adminController.getEditGroupPage)
+router.patch('/groups/:id', adminController.updateGroup)
+router.delete('/groups/:id', adminController.deleteGroup)
+router.get('/groups/search', adminController.searchGroup)
 
 module.exports = router
