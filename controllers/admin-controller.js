@@ -49,6 +49,25 @@ const adminController = {
         res.redirect('/admin/users')
       })
       .catch(error => next(error))
+  },
+  searchUser: (req, res, next) => {
+    if (!req.query.keyword) return res.redirect('back')
+    const keyword = req.query.keyword.trim().toLowerCase()
+    return User.findAll({ raw: true })
+      .then(users => {
+        if (!users) throw new Error('Something wrong please try again!')
+        const filteredUsers = users.filter(user => user.name.toLowerCase().includes(keyword) || user.email.toLowerCase().includes(keyword))
+        return filteredUsers
+      })
+      .then(filteredUsers => {
+        if (!filteredUsers.length) {
+          req.flash('warning_messages', `There is no results about ${keyword}`)
+          res.redirect('/admin/users')
+        } else {
+          return res.render('admin/users', { users: filteredUsers })
+        }
+      })
+      .catch(error => next(error))
   }
 }
 
