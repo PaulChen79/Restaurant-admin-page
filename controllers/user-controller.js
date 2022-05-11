@@ -14,17 +14,20 @@ const userController = {
     res.render('register')
   },
   register: (req, res, next) => {
-    if (req.body.password !== req.body.passwordCheck) throw new Error('Passwords do not match')
-    return User.findOne({ where: { email: req.body.email } })
+    console.log(req.body)
+    const { name, email, password, passwordCheck, groupId } = req.body
+    if (password !== passwordCheck) throw new Error('Passwords do not match')
+    return User.findOne({ where: { email } })
       .then(user => {
         if (user) throw new Error('Email already exist!')
         return bcrypt.genSalt(10)
       })
       .then(salt => bcrypt.hash(req.body.password, salt))
       .then(hash => User.create({
-        name: req.body.name,
-        email: req.body.email,
-        groupId: req.body.groupId,
+        name,
+        email,
+        groupId: groupId || 1,
+        isAdmin: false,
         password: hash
       }))
       .then(() => {

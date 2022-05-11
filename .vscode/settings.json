@@ -1,0 +1,5 @@
+{
+  "eslint.debug": false,
+  "eslint.nodeEnv": "",
+  "eslint.codeActionsOnSave.rules": []
+}
