@@ -36,6 +36,19 @@ const adminController = {
         res.redirect('/admin/users')
       })
       .catch(error => next(error))
+  },
+  deleteUser: (req, res, next) => {
+    const id = req.params.id
+    User.findByPk(id)
+      .then(user => {
+        if (!user) throw new Error('Something wrong please try again!')
+        return user.destroy()
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully deleted a user.')
+        res.redirect('/admin/users')
+      })
+      .catch(error => next(error))
   }
 }
 
