@@ -24,6 +24,7 @@ const userController = {
       .then(hash => User.create({
         name: req.body.name,
         email: req.body.email,
+        groupId: req.body.groupId,
         password: hash
       }))
       .then(() => {

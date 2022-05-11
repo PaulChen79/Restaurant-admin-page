@@ -6,31 +6,38 @@ const adminController = {
     res.render('admin/dashboard')
   },
   getUsersPage: (req, res, next) => {
-    User.findAll({ raw: true }).then(users => {
+    User.findAll({ raw: true, nest: true, include: [Group] }).then(users => {
       if (!users) throw new Error('Something wrong please try again!')
       return res.render('admin/users', { users })
     })
       .catch(error => next(error))
   },
   getAddUserPage: (req, res, next) => {
-    res.render('admin/addUser')
+    return Group.findAll({
+      raw: true
+    })
+      .then(groups => res.render('admin/addUser', { groups }))
+      .catch(err => next(err))
   },
   getEditUserPage: (req, res, next) => {
     const id = req.params.id
-    User.findByPk(id, { raw: true })
-      .then(user => {
+    return Promise.all([
+      User.findByPk(id, { raw: true }),
+      Group.findAll({ raw: true })
+    ])
+      .then(([user, groups]) => {
         if (!user) throw new Error('Something wrong please try again!')
-        return res.render('admin/editUser', { editUser: user })
+        return res.render('admin/editUser', { editUser: user, groups })
       })
-      .catch(error => next(error))
+      .catch(err => next(err))
   },
   updateUser: (req, res, next) => {
     const id = req.params.id
-    const { name, email, isAdmin } = req.body
+    const { name, email, isAdmin, groupId } = req.body
     User.findByPk(id)
       .then(user => {
         if (!user) throw new Error('Something wrong please try again!')
-        return user.update({ name, email, isAdmin })
+        return user.update({ name, email, groupId, isAdmin })
       })
       .then(() => {
         req.flash('success_messages', 'You have successfully updated a user.')
