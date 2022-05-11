@@ -28,7 +28,7 @@ const userController = {
       }))
       .then(() => {
         req.flash('success_messages', 'You have successfully registered!')
-        res.redirect('/users/login')
+        res.redirect('/admin/users')
       })
       .catch(error => next(error))
   },

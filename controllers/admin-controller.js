@@ -8,6 +8,9 @@ const adminController = {
     User.findAll({ raw: true }).then(users => {
       res.render('admin/users', { users })
     })
+  },
+  getAddUserPage: (req, res, next) => {
+    res.render('admin/addUser')
   }
 }
 

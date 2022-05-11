@@ -4,5 +4,6 @@ const adminController = require('../../controllers/admin-controller')
 
 router.get('/', adminController.getAdminHomePage)
 router.get('/users', adminController.getUsersPage)
+router.get('/addUser', adminController.getAddUserPage)
 
 module.exports = router
