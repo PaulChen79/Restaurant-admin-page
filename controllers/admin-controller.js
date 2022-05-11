@@ -1,5 +1,6 @@
 const db = require('../models')
 const User = db.User
+const Group = db.Group
 const adminController = {
   getAdminHomePage: (req, res) => {
     res.render('admin/dashboard')
@@ -67,6 +68,13 @@ const adminController = {
           return res.render('admin/users', { users: filteredUsers })
         }
       })
+      .catch(error => next(error))
+  },
+  getGroupsPage: (req, res, next) => {
+    Group.findAll({ raw: true }).then(groups => {
+      if (!groups) throw new Error('Something wrong please try again!')
+      return res.render('admin/groups', { groups })
+    })
       .catch(error => next(error))
   }
 }
