@@ -1,5 +1,5 @@
 const adminController = {
-  getAdminHonePage: (req, res) => {
+  getAdminHomePage: (req, res) => {
     res.render('admin/dashboard')
   }
 }
