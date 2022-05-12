@@ -5,6 +5,11 @@
   </div>
   <form class="form-signup" action="/admin/products/{{product.id}}?_method=PATCH" enctype="multipart/form-data"
     method="POST" style="width: 100%;">
+    <img src="{{product.image}}" style="width: 200px; height: 200px; position: relative; border: 3px solid #F8F8F8; box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+    <div class="form-row mb-3">
+      <label class="form-label" for="image">Image</label>
+      <input class="form-control" type="file" class="form-control-file" id="image" name="image">
+    </div>
     <div class="form-row mb-3">
       <label class="form-label" for="name">Name</label>
       <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus
@@ -36,10 +41,6 @@
         <option value="1">Active</option>
         {{/ifCond}}
       </select>
-    </div>
-    <div class="form-row mb-3">
-      <label class="form-label" for="image">Image</label>
-      <input class="form-control" type="file" class="form-control-file" id="image" name="image">
     </div>
     <button class="btn btn-primary btn-block" type="submit">Edit</button>
     <a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
