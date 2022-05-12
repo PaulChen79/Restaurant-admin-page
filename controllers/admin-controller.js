@@ -1,5 +1,6 @@
 const db = require('../models')
-const { User, Group, Table, Category } = db
+const { User, Group, Table, Category, Product } = db
+const { localFileHandler } = require('../helpers/file-helpers')
 const adminController = {
   getAdminHomePage: (req, res) => {
     res.render('admin/dashboard')
@@ -312,6 +313,107 @@ const adminController = {
           res.redirect('/admin/categories')
         } else {
           return res.render('admin/categories', { categories: filteredCategory })
+        }
+      })
+      .catch(error => next(error))
+  },
+  getProductsPage: (req, res, next) => {
+    Product.findAll({ raw: true, nest: true, include: [Category] }).then(products => {
+      if (!products) throw new Error('Something wrong please try again!')
+      return res.render('admin/products', { products })
+    })
+      .catch(error => next(error))
+  },
+  getAddProductPage: (req, res, next) => {
+    return Category.findAll({
+      raw: true
+    })
+      .then(categories => res.render('admin/addProduct', { categories }))
+      .catch(err => next(err))
+  },
+  addProduct: (req, res, next) => {
+    const { name, price, categoryId, active } = req.body
+    if (!name || !price || !categoryId || !active) throw new Error('All feilds needed.')
+    const { file } = req
+    localFileHandler(file)
+      .then(filePath => {
+        return Product.findOne({ where: { name } })
+          .then(product => {
+            if (product) throw new Error('Product already exist!')
+            return Product.create({ name, image: filePath, price, categoryId, active })
+          })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully added a product!')
+        res.redirect('/admin/products')
+      })
+      .catch(error => next(error))
+  },
+  getEditProductPage: (req, res, next) => {
+    const id = req.params.id
+    return Promise.all([
+      Product.findByPk(id, { raw: true }),
+      Category.findAll({ raw: true })
+    ])
+      .then(([product, categories]) => {
+        if (!product) throw new Error('Something wrong please try again!')
+        return res.render('admin/editProduct', { product, categories })
+      })
+      .catch(err => next(err))
+  },
+  updateProduct: (req, res, next) => {
+    const id = req.params.id
+    const { name, price, categoryId, active } = req.body
+    if (!name || !price || !categoryId || !active) throw new Error('All feilds needed.')
+    const { file } = req
+    Promise.all([
+      Product.findByPk(id),
+      localFileHandler(file)
+    ])
+      .then(([product, filePath]) => {
+        if (!product) throw new Error("Product didn't exist!")
+        return product.update({
+          name,
+          price,
+          categoryId,
+          active,
+          image: filePath || product.image
+        })
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully updated a product.')
+        res.redirect('/admin/products')
+      })
+      .catch(error => next(error))
+  },
+  deleteProduct: (req, res, next) => {
+    const id = req.params.id
+    Product.findByPk(id)
+      .then(product => {
+        if (!product) throw new Error('Something wrong please try again!')
+        return product.destroy()
+      })
+      .then(() => {
+        req.flash('success_messages', 'You have successfully deleted a product.')
+        res.redirect('/admin/products')
+      })
+      .catch(error => next(error))
+  },
+  searchProduct: (req, res, next) => {
+    if (!req.query.keyword) return res.redirect('back')
+    const keyword = req.query.keyword.trim().toLowerCase()
+    return Product.findAll({ raw: true })
+      .then(products => {
+        if (!products) throw new Error('Something wrong please try again!')
+        const filteredProduct = products.filter(product => product.name.toLowerCase().includes(keyword))
+        return filteredProduct
+      })
+      .then(filteredProduct => {
+        if (!filteredProduct.length) {
+          req.flash('warning_messages', `There is no results about ${keyword}`)
+          res.redirect('/admin/products')
+        } else {
+          return res.render('admin/products', { products: filteredProduct })
         }
       })
       .catch(error => next(error))

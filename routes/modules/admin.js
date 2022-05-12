@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const adminController = require('../../controllers/admin-controller')
+const upload = require('../../middleware/multer')
 
 router.get('/', adminController.getAdminHomePage)
 
@@ -34,5 +35,13 @@ router.get('/categories/:id/edit', adminController.getEditCategoryPage)
 router.patch('/categories/:id', adminController.updateCategory)
 router.delete('/categories/:id', adminController.deleteCategory)
 router.get('/categories/search', adminController.searchCategory)
+
+router.get('/products', adminController.getProductsPage)
+router.get('/addProduct', adminController.getAddProductPage)
+router.post('/products', upload.single('image'), adminController.addProduct)
+router.get('/products/:id/edit', adminController.getEditProductPage)
+router.patch('/products/:id', upload.single('image'), adminController.updateProduct)
+router.delete('/products/:id', adminController.deleteProduct)
+router.get('/products/search', adminController.searchProduct)
 
 module.exports = router

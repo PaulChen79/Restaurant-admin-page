@@ -1,0 +1,47 @@
+{{> collapseNav}}
+<div class="col-10">
+  <div class="mb-4 text-center">
+    <h1 class="h3 font-weight-normal mb-3">Edit Product</h1>
+  </div>
+  <form class="form-signup" action="/admin/products/{{product.id}}?_method=PATCH" enctype="multipart/form-data"
+    method="POST" style="width: 100%;">
+    <div class="form-row mb-3">
+      <label class="form-label" for="name">Name</label>
+      <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus
+        value="{{product.name}}">
+    </div>
+    <div class="form-row mb-3">
+      <label class="form-label" for="price">Price</label>
+      <input type="number" id="price" name="price" class="form-control" placeholder="Price" required
+        value="{{product.price}}">
+    </div>
+    <div class="form-row mb-3">
+      <label class="form-label" for="categoryId">Category</label>
+      <select class="form-select" aria-label="Default select example" id="categoryId" name="categoryId">
+        {{#each categories}}
+        <option value="{{this.id}}" {{#ifCond this.id ../product.categoryId}} selected {{/ifCond}}>
+          {{this.name}}
+        </option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="form-row mb-3">
+      <label class="form-label" for="status">Choose Active</label>
+      <select class="form-select" aria-label="Default select example" id="active" name="active">
+        {{#ifCond product.active 1}}
+        <option selected value="{{product.active}}">Active</option>
+        <option value="0">Not active</option>
+        {{else}}
+        <option selected value="{{product.active}}">Not active</option>
+        <option value="1">Active</option>
+        {{/ifCond}}
+      </select>
+    </div>
+    <div class="form-row mb-3">
+      <label class="form-label" for="image">Image</label>
+      <input class="form-control" type="file" class="form-control-file" id="image" name="image">
+    </div>
+    <button class="btn btn-primary btn-block" type="submit">Edit</button>
+    <a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
+  </form>
+</div>
